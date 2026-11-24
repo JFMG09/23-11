@@ -1,24 +1,52 @@
 import { useState } from "react"
+import { useNavigate } from "react-router"
+import {toast } from "react-toastify"
+ 
 
-const AddJobPage = () => {
+const AddJobPage = ({AddJobSubmit}) => {
    
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    const [type, setType] = useState('')
-    const [salary, setSalary] = useState('')
+    const [type, setType] = useState('Full-Time')
+    const [salary, setSalary] = useState('Under $50K')
     const [location, setLocation] = useState('')
-    const [company, setCompany] = useState('')
+    const [companyName, setCompanyName] = useState('')
     const [companyDescription, setCompanyDescription] = useState('')
     const [contactEmail, setContactEmail] = useState('')
     const [contactPhone, setContactPhone] = useState('')
 
+    const navigate  = useNavigate()
+
+    const submitForm =(event) =>{
+        event.preventDefault()
+        const newJob ={
+            title,
+            description,
+            type, 
+            salary,
+            location,
+            company:{
+                name: companyName,
+                description: companyDescription,
+                contactEmail, 
+                contactPhone
+
+            }
+        }
+        AddJobSubmit(newJob)
+
+        toast.success("Job añadido correctamente")
+
+         navigate('/jobs')
+}
+
   return (
-        <section className="bg-indigo-50">
+       <section className="bg-indigo-50">
             <div className="container m-auto max-w-2xl py-24">
                 <div
                 className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0"
                 >
-                <form>
+                <form onSubmit={submitForm}>
                     <h2 className="text-3xl text-center font-semibold mb-6">Add Job</h2>
 
                     <div className="mb-4">
@@ -127,8 +155,8 @@ const AddJobPage = () => {
                         name="company"
                         className="border rounded w-full py-2 px-3"
                         placeholder="Company Name"
-                         value ={company}
-                        onChange={(event) => setCompany(event.target.value)}
+                         value ={companyName}
+                        onChange={(event) => setCompanyName(event.target.value)}
                     />
                     </div>
 
@@ -194,7 +222,7 @@ const AddJobPage = () => {
                 </form>
                 </div>
             </div>
-            </section>
+            </section> 
       )
 }
 
